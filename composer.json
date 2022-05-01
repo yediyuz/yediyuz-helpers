@@ -1,0 +1,56 @@
+{
+  "name": "yediyuz/yediyuz-helpers",
+  "description": "Yediyuz Development Helpers",
+  "license": "MIT",
+  "homepage": "https://github.com/yediyuz/yediyuz-helpers",
+  "autoload": {
+    "psr-4": {
+      "Yediyuz\\Helpers\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Yediyuz\\Helpers\\Tests\\": "tests/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Mert Aşan",
+      "email": "mert@yediyuz.com"
+    }
+  ],
+  "require": {
+    "php": "^8.0",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "yediyuz/dev-tools": "dev-master",
+    "pestphp/pest": "^1.21",
+    "pestphp/pest-plugin-mock": "^1.0.3",
+    "pestphp/pest-plugin-parallel": "^1.0",
+    "phpstan/phpstan": "^1.5.4",
+    "phpunit/phpcov": "^8.2",
+    "spatie/pest-plugin-test-time": "^1.0"
+  },
+  "scripts": {
+    "lint": "php-cs-fixer fix -v",
+    "test": "vendor/bin/pest --colors=always --parallel",
+    "test:lint": "php-cs-fixer fix -v --dry-run",
+    "test:styles": "vendor/bin/phpstan analyse --ansi",
+    "test:styles:pro": "vendor/bin/phpstan analyse --pro --fix --watch",
+    "test:coverage": "@test --coverage-php ./coverage/cov/default.cov --coverage-html coverage/html/default",
+    "test:all": [
+      "@test:lint",
+      "@test:styles",
+      "@test"
+    ]
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
