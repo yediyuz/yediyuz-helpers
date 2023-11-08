@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-
 namespace Yediyuz\Helpers;
 
 class ArrayHelper
@@ -13,7 +12,7 @@ class ArrayHelper
      */
     public static function extend(array ...$arrays): array
     {
-        return self::process(false, false, ...$arrays);
+        return self::process(false, ...$arrays);
     }
 
     /**
@@ -21,28 +20,24 @@ class ArrayHelper
      */
     public static function replace(array ...$arrays): array
     {
-        return self::process(true, false, ...$arrays);
+        return self::process(true, ...$arrays);
     }
 
-    private static function process(bool $force = false, bool $merge = false, array &$arrays = []): array
+    private static function process(bool $force, array ...$arrays): array
     {
-        $args = func_get_args();
-        array_shift($args);
-        $argsCount = count($args);
+        $newArray = [];
 
-        for ($i = 1; $i < $argsCount; $i++) {
-            // extend current result:
-            foreach ($args[$i] as $k => $v) {
-                if (! isset($arrays[$k])) {
-                    $arrays[$k] = $v;
-                } elseif (is_array($arrays[$k]) && is_array($v)) {
-                    self::process($force, $merge, $arrays[$k], $v);
-                } elseif ($force || blank($arrays[$k])) {
-                    $arrays[$k] = $v;
+        foreach ($arrays as $array) {
+            foreach ($array as $key => $value) {
+                if (is_array($newArray[$key] ?? []) && is_array($value)) {
+                    $newArray[$key] ??= [];
+                    $newArray[$key] = self::process($force, $newArray[$key], $value);
+                } elseif ($force || ! isset($newArray[$key])) {
+                    $newArray[$key] = $value;
                 }
             }
         }
 
-        return $arrays;
+        return $newArray;
     }
 }
