@@ -14,12 +14,14 @@ test('extend', function () {
             'eight' => null,
         ],
         'seven' => null,
+        'ten'   => 'ten-string',
     ];
     $array2 = [
         'one'   => 'array2',
         'nine'  => '',
         'two'   => 'array2-two',
         'seven' => null,
+        'ten'   => [],
     ];
     $array3 = [
         'one'   => 'array3',
@@ -33,10 +35,11 @@ test('extend', function () {
         'seven' => null,
     ];
 
+    // expect(ArrayHelper::extend($array1, $array2, $array3))->toEqual([
     expect(ArrayHelper::extend($array1, $array2, $array3))->toEqual([
         'one'   => 'array2',
-        'nine'  => 'array3',
-        'two'   => 'array2-two',
+        'nine'  => '',
+        'two'   => [],
         'three' => [
             'four'  => 'array1',
             'five'  => 'array3',
@@ -44,6 +47,7 @@ test('extend', function () {
         ],
         'six'   => null,
         'seven' => null,
+        'ten'   => 'ten-string',
     ]);
 });
 
