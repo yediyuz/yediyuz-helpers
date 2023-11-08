@@ -9,6 +9,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Str;
 use JsonSerializable;
+use ReturnTypeWillChange;
 
 abstract class AbstractAttr implements ArrayAccess, Arrayable, Jsonable, JsonSerializable
 {
@@ -44,19 +45,19 @@ abstract class AbstractAttr implements ArrayAccess, Arrayable, Jsonable, JsonSer
         return ! is_null($this->getAttribute($key));
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetGet($key): mixed
     {
         return $this->getAttribute($key);
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetSet($key, $value): void
     {
         $this->$key = $value;
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetUnset($key): void
     {
         unset($this->attributes[$key]);

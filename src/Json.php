@@ -7,6 +7,7 @@ namespace Yediyuz\Helpers;
 use Exception;
 use Illuminate\Support\Arr;
 use JsonSerializable;
+use TypeError;
 use Yediyuz\Helpers\Exceptions\JsonException;
 
 class Json
@@ -34,7 +35,7 @@ class Json
 
         try {
             $result = json_encode(self::jsonSerialize($value), $options|JSON_THROW_ON_ERROR);
-        } catch (\JsonException|\TypeError $e) {
+        } catch (\JsonException|TypeError $e) {
             throw new JsonException($e->getMessage(), $e->getCode());
         }
 
@@ -52,7 +53,7 @@ class Json
 
         try {
             $result = \json_decode($json, $assoc, $depth, $options); // @phpstan-ignore-line
-        } catch (\JsonException|\TypeError $e) {
+        } catch (\JsonException|TypeError $e) {
             $error = true;
         }
 
@@ -80,7 +81,7 @@ class Json
 
         try {
             $result = json_encode(self::jsonSerialize($value), $options|JSON_THROW_ON_ERROR);
-        } catch (\JsonException|\TypeError $e) {
+        } catch (\JsonException|TypeError $e) {
             $error = true;
         }
 
