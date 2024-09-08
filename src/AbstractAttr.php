@@ -22,7 +22,7 @@ abstract class AbstractAttr implements ArrayAccess, Arrayable, Jsonable, JsonSer
 
     public function __set(string $key, mixed $value): void
     {
-        $this->attributes[$key] = $value;
+        $this->setAttribute($key, $value);
     }
 
     public function __isset(string $key)
@@ -54,7 +54,7 @@ abstract class AbstractAttr implements ArrayAccess, Arrayable, Jsonable, JsonSer
     #[ReturnTypeWillChange]
     public function offsetSet($key, $value): void
     {
-        $this->$key = $value;
+        $this->setAttribute($key, $value);
     }
 
     #[ReturnTypeWillChange]
@@ -90,6 +90,11 @@ abstract class AbstractAttr implements ArrayAccess, Arrayable, Jsonable, JsonSer
         return 'get' . Str::studly($key) . 'Attribute';
     }
 
+    protected static function getMutatorMethodName(string $key): string
+    {
+        return 'set' . Str::studly($key) . 'Attribute';
+    }
+
     protected function getAttribute(string $key): mixed
     {
         $value = $this->attributes[$key] ?? null;
@@ -101,5 +106,17 @@ abstract class AbstractAttr implements ArrayAccess, Arrayable, Jsonable, JsonSer
         }
 
         return $value;
+    }
+
+    protected function setAttribute(string $key, mixed $value): void
+    {
+        $mutatorFunctionName = self::getMutatorMethodName($key);
+
+        if (method_exists($this, $mutatorFunctionName)) {
+            $this->$mutatorFunctionName($value);
+            return;
+        }
+
+        $this->attributes[$key] = $value;
     }
 }
