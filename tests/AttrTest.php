@@ -40,9 +40,9 @@ test('attributes', function () {
 
     $this->assertFalse(isset($attr->foo));
 
-    expect((string) $attr)->toBeJson();
+    expect((string) $attr)
+        ->toBeJson()
+        ->and($attr->jsonSerialize())->toBeArray()
+        ->and($attr->toJson())->toBeJson();
 
-    expect($attr->jsonSerialize())->toBeArray();
-
-    expect($attr->toJson())->toBeJson();
 });
